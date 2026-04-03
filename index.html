@@ -6,93 +6,60 @@
     <title>기상청 날씨 달력 빌더</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --primary-color: #0d6efd; }
-        body { background-color: #f4f7f9; font-family: 'Pretendard', sans-serif; color: #333; }
-        .builder-card { background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: none; }
-        .code-block { background: #212529; color: #f8f9fa; padding: 20px; border-radius: 10px; position: relative; font-family: 'Courier New', Courier, monospace; }
-        .copy-btn { position: absolute; right: 10px; top: 10px; font-size: 0.8rem; }
-        .step-badge { width: 30px; height: 30px; background: var(--primary-color); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; }
+        body { background-color: #f8f9fa; font-family: 'Pretendard', sans-serif; }
+        .builder-card { background: white; border-radius: 15px; border: none; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .key-input-area { background: #e9ecef; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 2px dashed #ced4da; }
+        .preview-box { background: #fff; border: 1px solid #dee2e6; border-radius: 12px; padding: 20px; min-height: 250px; }
+        .code-area { background: #212529; color: #ced4da; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; }
+        .weather-card { border-left: 5px solid #0d6efd; background: #fdfdfd; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="fw-bold">🌤️ 나만의 날씨 달력 만들기</h1>
-        <p class="text-muted">기상청 데이터를 내 캘린더로 가져오는 가장 쉬운 방법</p>
-        <a href="#guide" class="btn btn-outline-primary btn-sm mt-2">사용 방법 가이드 보기 ↓</a>
+        <h1 class="fw-bold">🌤️ 날씨 달력 실시간 생성기</h1>
+        <p class="text-muted">본인의 API 키를 사용하여 실제 예보 데이터를 확인하고 코드를 생성하세요.</p>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="builder-card p-4 h-100">
-                <h4 class="mb-4"><span class="step-badge">1</span> 지역 설정 및 코드 생성</h4>
-                <div class="mb-3">
-                    <label class="form-label">지역 선택 (현재 예시: 서울 중랑구)</label>
-                    <select class="form-select mb-3" id="regionSelect" onchange="updateCode()">
-                        <option value="seoul">서울 (중랑구 봉화산로)</option>
-                        <option value="busan">부산 (해운대구)</option>
-                        <option value="daegu">대구 (중구)</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">표출될 위치 이름</label>
-                    <input type="text" id="locName" class="form-control" value="봉화산로 193" oninput="updateCode()">
-                </div>
-                
-                <label class="form-label mt-3">아래 코드를 복사해 Python 파일에 붙여넣으세요:</label>
-                <div class="code-block" id="codeOutput">
-NX, NY = 60, 127
-LOCATION_NAME = "봉화산로 193"
-REG_ID_TEMP = '11B10101'
-REG_ID_LAND = '11B00000'
-                </div>
-                <button class="btn btn-dark w-100 mt-3" onclick="copyCode()">코드 복사하기</button>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="builder-card p-4 h-100">
-                <h4 class="mb-4"><span class="step-badge">2</span> 달력 미리보기 (체험판)</h4>
-                <div id="calendarPreview" class="border rounded p-3 bg-light">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <strong id="prevTitle">☀️ 12°C / 20°C</strong>
-                        <small class="text-muted" id="prevDate">2026.04.03</small>
-                    </div>
-                    <div style="font-size: 0.85rem; line-height: 1.8;">
-                        📍 <span id="prevLoc">봉화산로 193</span><br>
-                        [9시] ☀️ 12°C (☔0% 💧50% 💨1.2m/s)<br>
-                        [12시] ⛅ 18°C (☔20% 💧40% 💨2.1m/s)<br>
-                        [15시] ☀️ 20°C (☔0% 💧35% 💨3.0m/s)<br>
-                        ...
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h5 class="h6 fw-bold">🚀 내 저장소로 가져가기</h5>
-                    <p class="small text-muted">Fork 버튼을 눌러 소스코드를 내 깃허브로 복사하세요.</p>
-                    <a href="https://github.com/Murianwind/weather-calendar" target="_blank" class="btn btn-primary w-100">GitHub 저장소 방문하기</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="key-input-area text-center">
+                <h5 class="fw-bold mb-3">🔑 기상청 API 키 입력</h5>
+                <p class="small text-danger mb-3">※ 입력하신 키는 브라우저 메모리에만 임시 저장되며, 창을 닫으면 즉시 파기됩니다.</p>
+                <div class="input-group mb-2" style="max-width: 600px; margin: 0 auto;">
+                    <input type="password" id="userApiKey" class="form-control" placeholder="기상청 인증키(Decoding)를 입력하세요">
+                    <button class="btn btn-primary" onclick="fetchRealtimeWeather()">데이터 불러오기</button>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="guide" class="row mt-5 pt-5">
-        <div class="col-12">
-            <div class="builder-card p-5">
-                <h2 class="fw-bold mb-4">📖 실제 동작을 위한 설정 가이드</h2>
-                <hr>
-                <div class="row mt-4">
-                    <div class="col-md-4 mb-4">
-                        <h5>1. 저장소 복사 (Fork)</h5>
-                        <p class="text-muted small">위의 [GitHub 저장소 방문] 버튼을 클릭한 뒤, 오른쪽 상단의 <b>Fork</b> 버튼을 눌러 자신의 계정으로 가져옵니다.</p>
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <div class="builder-card p-4 h-100">
+                        <h6 class="fw-bold mb-3">📍 지역 설정</h6>
+                        <select class="form-select mb-4" id="regSel" onchange="fetchRealtimeWeather()">
+                            <option value="60,127,11B10101,11B00000,서울 중랑구">서울 중랑구</option>
+                            <option value="98,76,11H20201,11H20000,부산 해운대">부산 해운대</option>
+                            <option value="89,90,11H10701,11H10000,대구 중구">대구 중구</option>
+                            <option value="63,89,11H10501,11H10000,대전 중구">대전 중구</option>
+                        </select>
+                        
+                        <h6 class="fw-bold mb-2">💻 복사할 코드 (Python)</h6>
+                        <div class="code-area mb-3" id="codeOut">지역을 선택하세요...</div>
+                        <button class="btn btn-outline-dark btn-sm w-100" onclick="copyCode()">코드 복사하기</button>
                     </div>
-                    <div class="col-md-4 mb-4">
-                        <h5>2. API 키 등록</h5>
-                        <p class="text-muted small">기상청 API 허브에서 발급받은 키를 <b>Settings > Secrets > Actions</b>에 <code>KMA_API_KEY</code>라는 이름으로 등록합니다.</p>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <h5>3. 코드 수정 및 실행</h5>
-                        <p class="text-muted small">위에서 생성한 지역 코드를 <code>update_calendar.py</code> 상단에 붙여넣고 저장하면 로봇이 매일 달력을 업데이트합니다.</p>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="builder-card p-4 h-100">
+                        <h6 class="fw-bold mb-3">👀 실시간 미리보기 (오늘)</h6>
+                        <div id="loading" class="text-center d-none py-5">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <p class="mt-2">데이터 수신 중...</p>
+                        </div>
+                        <div id="previewArea" class="preview-box">
+                            <p class="text-center text-muted pt-5">API 키를 입력하고 버튼을 눌러주세요.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,30 +68,69 @@ REG_ID_LAND = '11B00000'
 </div>
 
 <script>
-    const data = {
-        seoul: { nx: 60, ny: 127, temp: '11B10101', land: '11B00000', name: '봉화산로 193' },
-        busan: { nx: 98, ny: 76, temp: '11H20201', land: '11H20000', name: '해운대 해수욕장' },
-        daegu: { nx: 89, ny: 90, temp: '11H10701', land: '11H10000', name: '대구 동성로' }
-    };
+    async function fetchRealtimeWeather() {
+        const apiKey = document.getElementById('userApiKey').value.trim();
+        if (!apiKey) {
+            alert("API 키를 먼저 입력해주세요!");
+            return;
+        }
 
-    function updateCode() {
-        const reg = document.getElementById('regionSelect').value;
-        const loc = document.getElementById('locName').value;
-        const selected = data[reg];
+        const val = document.getElementById('regSel').value.split(',');
+        const [nx, ny, tId, lId, name] = val;
+
+        // 코드 출력 업데이트
+        document.getElementById('codeOut').innerText = `NX, NY = ${nx}, ${ny}\nLOCATION_NAME = "${name}"\nREG_ID_TEMP = '${tId}'\nREG_ID_LAND = '${lId}'`;
+
+        const area = document.getElementById('previewArea');
+        const loader = document.getElementById('loading');
         
-        const code = `NX, NY = ${selected.nx}, ${selected.ny}
-LOCATION_NAME = "${loc}"
-REG_ID_TEMP = '${selected.temp}'
-REG_ID_LAND = '${selected.land}'`;
+        loader.classList.remove('d-none');
+        area.classList.add('d-none');
 
-        document.getElementById('codeOutput').innerText = code;
-        document.getElementById('prevLoc').innerText = loc;
+        // 오늘 날짜 및 시간 설정 (08시 기준 예시)
+        const now = new Date();
+        const baseDate = now.toISOString().split('T')[0].replace(/-/g, '');
+        const baseTime = "0200"; // 가장 안정적인 새벽 예보 데이터
+
+        const url = `https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getVilageFcst?dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${nx}&ny=${ny}&numOfRows=300&authKey=${apiKey}`;
+
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.response.header.resultCode !== "00") {
+                throw new Error(data.response.header.resultMsg);
+            }
+
+            const items = data.response.body.items.item;
+            const todayItems = items.filter(i => i.fcstDate === baseDate);
+            
+            const hourly = {};
+            todayItems.forEach(i => {
+                if(!hourly[i.fcstTime]) hourly[i.fcstTime] = {};
+                hourly[i.fcstTime][i.category] = i.fcstValue;
+            });
+
+            let html = `<div class="weather-card"><p class="fw-bold">📍 ${name} 실시간 예보</p><div style="font-size:0.8rem;">`;
+            Object.keys(hourly).sort().forEach(t => {
+                const h = hourly[t];
+                html += `<div>[${parseInt(t.slice(0,2))}시] 🌡️ ${h.TMP}°C (☔${h.POP}% 💧${h.REH}% 💨${h.WSD}m/s)</div>`;
+            });
+            html += `</div></div>`;
+            area.innerHTML = html;
+
+        } catch (e) {
+            area.innerHTML = `<div class="alert alert-danger">에러: ${e.message}<br><small>키가 올바른지, 혹은 활용신청이 승인되었는지 확인하세요.</small></div>`;
+        } finally {
+            loader.classList.add('d-none');
+            area.classList.remove('d-none');
+        }
     }
 
     function copyCode() {
-        const text = document.getElementById('codeOutput').innerText;
+        const text = document.getElementById('codeOut').innerText;
         navigator.clipboard.writeText(text);
-        alert("코드가 복사되었습니다! Python 파일 상단에 붙여넣으세요.");
+        alert("코드가 복사되었습니다!");
     }
 </script>
 
