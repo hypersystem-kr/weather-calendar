@@ -1,39 +1,44 @@
 name: Update Weather ICS
 
 on:
+  schedule:
+    # 기상청 발표(02:00~23:00, 3시간 간격) 15분 뒤 실행
+    # UTC 기준 (KST - 9시간): 17:15, 20:15, 23:15, 02:15, 05:15, 08:15, 11:15, 14:15
+    - cron: '15 17,20,23,2,5,8,11,14 * * *'
+
   push:
+    paths:
+      - 'update_calendar.py'
     branches:
       - main
-  schedule:
-    - cron: '0 0,6,12,18 * * *' # 하루 4번 자동 실행 (한국시간 9시, 15시, 21시, 03시)
-  workflow_dispatch: # 수동 실행 버튼 생성
+
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          
+
       - name: Install dependencies
-        run: |
-          pip install requests icalendar pytz
-          
-      - name: Run Update Script
+        run: pip install requests pytz icalendar
+
+      - name: Run update script
         env:
           KMA_API_KEY: ${{ secrets.KMA_API_KEY }}
+          TZ: Asia/Seoul
         run: python update_calendar.py
-        
-      - name: Commit and Push
+
+      - name: Commit and Push changes
         run: |
+          KST_TIME=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add weather.ics
-          git commit -m "Update weather calendar" || echo "No changes to commit"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update weather.ics [$KST_TIME KST]" && git push)
