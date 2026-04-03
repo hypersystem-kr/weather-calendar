@@ -15,7 +15,7 @@ DESCRIPTION:📍 봉화산로 193\n\n[12시] ⛅ 18°C 구름많음 (💧5
  💧50% 💨3.4m/s)\n[20시] ⛅ 16°C 구름많음 (💧55% 💨3.1m/s)\n
  [21시] ⛅ 15°C 구름많음 (💧55% 💨2.1m/s)\n[22시] ⛅ 14°C 구
  름많음 (💧60% 💨2.1m/s)\n[23시] ⛅ 14°C 구름많음 (💧65% 
- 💨2.9m/s)\n\n최종 갱신: 2026-04-03 11:37:50
+ 💨2.9m/s)\n\n최종 갱신: 2026-04-03 12:14:05 KST
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:🌧️ 9°C / 16°C
@@ -41,8 +41,8 @@ DESCRIPTION:📍 봉화산로 193\n\n[0시] 🌧️ 13°C 비/소나기 (
  19시] ⛅ 12°C 구름많음 (💧80% 💨2.2m/s)\n[20시] ⛅ 11°C 구
  름많음 (💧80% 💨2.2m/s)\n[21시] ⛅ 10°C 구름많음 (💧80% 
  💨2m/s)\n[22시] ⛅ 10°C 구름많음 (💧85% 💨1.7m/s)\n[23시] 
- ⛅ 9°C 구름많음 (💧85% 💨1.7m/s)\n\n최종 갱신: 2026-04-03 11
- :37:50
+ ⛅ 9°C 구름많음 (💧85% 💨1.7m/s)\n\n최종 갱신: 2026-04-03 12
+ :14:05 KST
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 6°C / 17°C
@@ -66,7 +66,7 @@ DESCRIPTION:📍 봉화산로 193\n\n[0시] ⛅ 8°C 구름많음 (💧85%
  20시] ☁️ 12°C 흐림 (💧65% 💨2.5m/s)\n[21시] ☁️ 11°C 흐
  림 (💧70% 💨2.4m/s)\n[22시] ☁️ 11°C 흐림 (💧75% 💨1.9m/s)
  \n[23시] ☁️ 10°C 흐림 (💧75% 💨1.5m/s)\n\n최종 갱신: 2026-
- 04-03 11:37:50
+ 04-03 12:14:05 KST
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 8°C / 15°C
@@ -79,59 +79,41 @@ DESCRIPTION:📍 봉화산로 193\n\n[0시] ☁️ 10°C 흐림 (💧75%
  ️ 10°C 비/소나기 (☔60% 💧80% 💨1m/s)\n[12시] ☀️ 14°C 
  맑음 (💧65% 💨1m/s)\n[15시] ☀️ 15°C 맑음 (💧50% 💨1m/s)\
  n[18시] ☀️ 13°C 맑음 (💧50% 💨1m/s)\n[21시] ☀️ 9°C 맑
- 음 (💧45% 💨1m/s)\n\n최종 갱신: 2026-04-03 11:37:50
+ 음 (💧45% 💨1m/s)\n\n최종 갱신: 2026-04-03 12:14:05 KST
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☀️ 5°C / 16°C
 DTSTART;VALUE=DATE:20260407
 DTEND;VALUE=DATE:20260408
 UID:20260407@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[오전] ☀️ 맑음 (☔20%)\n[오
- 후] ☀️ 맑음 (☔10%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☀️ 6°C / 18°C
 DTSTART;VALUE=DATE:20260408
 DTEND;VALUE=DATE:20260409
 UID:20260408@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[오전] ☀️ 맑음 (☔20%)\n[오
- 후] ☀️ 맑음 (☔20%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☁️ 9°C / 18°C
 DTSTART;VALUE=DATE:20260409
 DTEND;VALUE=DATE:20260410
 UID:20260409@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[오전] ⛅ 구름많음 (☔30%)\n[
- 오후] ☁️ 흐림 (☔40%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:⛅ 9°C / 21°C
 DTSTART;VALUE=DATE:20260410
 DTEND;VALUE=DATE:20260411
 UID:20260410@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[오전] ⛅ 구름많음 (☔30%)\n[
- 오후] ⛅ 구름많음 (☔30%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☀️ 9°C / 20°C
 DTSTART;VALUE=DATE:20260411
 DTEND;VALUE=DATE:20260412
 UID:20260411@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[종일] ☀️ 맑음 (☔20%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☀️ 10°C / 22°C
 DTSTART;VALUE=DATE:20260412
 DTEND;VALUE=DATE:20260413
 UID:20260412@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[종일] ☀️ 맑음 (☔20%)
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:⛅ 8°C / 20°C
 DTSTART;VALUE=DATE:20260413
 DTEND;VALUE=DATE:20260414
 UID:20260413@kma_weather
-DESCRIPTION:📍 봉화산로 193\n\n[종일] ⛅ 구름많음 (☔30%)
 END:VEVENT
 END:VCALENDAR
