@@ -13,7 +13,7 @@ REG_ID_LAND = os.environ.get('REG_ID_LAND', '11B00000')
 API_KEY = os.environ.get('KMA_API_KEY')
 
 def get_weather_info(sky, pty):
-    """단기 예보 코드 판별 (특수 기상 포함)"""
+    """단기 예보 코드 판별"""
     sky, pty = str(sky), str(pty)
     if pty != '0':
         if pty in ['1', '4', '5']: return "🌧️", "비/소나기"
@@ -26,7 +26,7 @@ def get_weather_info(sky, pty):
     return "🌡️", "정보없음"
 
 def get_mid_emoji(wf):
-    """중기 예보 문자열 판별 (진눈깨비 등 포함)"""
+    """중기 예보 문자열 판별"""
     if not wf: return "🌡️"
     if '비' in wf or '소나기' in wf or '적심' in wf: return "🌧️"
     if '눈' in wf or '진눈깨비' in wf: return "🌨️"
@@ -65,7 +65,7 @@ def main():
             if t not in forecast_map[d]: forecast_map[d][t] = {}
             forecast_map[d][t][cat] = val
 
-    # --- [2. 단기 예보 조립 (하루 1개 일정 + 메모란 이모지 강화)] ---
+    # --- [2. 단기 예보 조립] ---
     short_limit = (now + timedelta(days=3)).strftime('%Y%m%d')
     for d_str in sorted(forecast_map.keys()):
         if d_str > short_limit: continue
@@ -79,23 +79,22 @@ def main():
         rep_emoji, _ = get_weather_info(day_data[rep_t].get('SKY','1'), day_data[rep_t].get('PTY','0'))
         
         event = Event()
+        # 제목(Summary)은 깔끔하게 유지
         event.add('summary', f"{rep_emoji} {t_min}°C/{t_max}°C")
+        # 위치(Location) 필드에 LOCATION_NAME 추가
+        event.add('location', LOCATION_NAME)
         
-        # 상세 메모(Description) 작성
         description = []
         for t_str in sorted(day_data.keys()):
             t_info = day_data[t_str]
             emoji, wf_str = get_weather_info(t_info['SKY'], t_info['PTY'])
             temp = t_info['TMP']
-            reh = t_info.get('REH', '-') # 습도
-            wsd = t_info.get('WSD', '-') # 풍속
+            reh = t_info.get('REH', '-')
+            wsd = t_info.get('WSD', '-')
             pty = t_info.get('PTY', '0')
-            pop = t_info.get('POP', '0') # 강수확률
+            pop = t_info.get('POP', '0')
             
-            # 강수확률 표시 여부 (비/눈 올 때만 ☔ 추가)
             pop_prefix = f"☔{pop}% " if pty != '0' else ""
-            
-            # 요청하신 형식: [09시] ☀️ 맑음 9°C (💧80%, 🚩1.5m/s)
             line = f"[{t_str[:2]}시] {emoji} {wf_str} {temp}°C ({pop_prefix}💧{reh}%, 🚩{wsd}m/s)"
             description.append(line)
         
@@ -107,7 +106,7 @@ def main():
         event.add('uid', f"{d_str}@short_summary")
         cal.add_component(event)
 
-    # --- [3. 중기 예보 수집] ---
+    # --- [3. 중기 예보 조립] ---
     tm_fc = now.strftime('%Y%m%d') + ("0600" if now.hour < 12 else "1800")
     url_mid_temp = f"https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidTa?dataType=JSON&regId={REG_ID_TEMP}&tmFc={tm_fc}&authKey={API_KEY}"
     url_mid_land = f"https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidLandFcst?dataType=JSON&regId={REG_ID_LAND}&tmFc={tm_fc}&authKey={API_KEY}"
@@ -124,6 +123,8 @@ def main():
                 t_min, t_max = t_item.get(f'taMin{i}'), t_item.get(f'taMax{i}')
                 
                 event.add('summary', f"{get_mid_emoji(wf)} {wf} {t_min}/{t_max}°C")
+                # 중기 예보에도 위치 필드 추가
+                event.add('location', LOCATION_NAME)
                 event.add('dtstart', (now + timedelta(days=i)).date())
                 event.add('dtend', (now + timedelta(days=i+1)).date())
                 event.add('uid', f"{d_target}@mid")
