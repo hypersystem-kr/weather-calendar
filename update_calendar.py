@@ -49,7 +49,7 @@ def main():
     cal.add('X-WR-CALNAME', '기상청 날씨')
     cal.add('X-WR-TIMEZONE', 'Asia/Seoul')
 
-    # --- [1. 단기 예보 수집] ---
+    # --- [1. 단기 예보: 오늘 ~ 3일차 (매시간 데이터)] ---
     base_date = now.strftime('%Y%m%d')
     base_h = max([h for h in [2, 5, 8, 11, 14, 17, 20, 23] if h <= now.hour], default=2)
     base_time = f"{base_h:02d}00"
@@ -65,7 +65,6 @@ def main():
             if t not in forecast_map[d]: forecast_map[d][t] = {}
             forecast_map[d][t][cat] = val
 
-    # --- [2. 단기 예보 조립 (3일차 매시간 보정)] ---
     short_limit = (now + timedelta(days=3)).strftime('%Y%m%d')
     for d_str in sorted(forecast_map.keys()):
         if d_str > short_limit: continue
@@ -81,14 +80,10 @@ def main():
         event.add('location', LOCATION_NAME)
         
         desc = []
-        last_info = None # 빈 시간대를 채우기 위한 백업 데이터
-        
-        # 00시부터 23시까지 루프를 돌며 데이터가 없으면 직전 데이터로 채움
+        last_info = None
         for h in range(24):
             t_str = f"{h:02d}00"
-            if t_str in day_data:
-                last_info = day_data[t_str] # 데이터가 있으면 갱신
-            
+            if t_str in day_data: last_info = day_data[t_str]
             if last_info:
                 emoji, wf_str = get_weather_info(last_info['SKY'], last_info['PTY'])
                 temp, reh, wsd, pty, pop = last_info['TMP'], last_info.get('REH','-'), last_info.get('WSD','-'), last_info.get('PTY','0'), last_info.get('POP','0')
@@ -102,37 +97,51 @@ def main():
         event.add('uid', f"{d_str}@short_summary")
         cal.add_component(event)
 
-    # --- [3. 중기 예보 (4일~10일)] ---
-    # (이전의 완벽했던 중기 예보 로직과 동일)
+    # --- [2. 중기 예보: 4일차 ~ 10일차] ---
     tm_fc = now.strftime('%Y%m%d') + ("0600" if now.hour < 12 else "1800")
     url_mid_temp = f"https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidTa?dataType=JSON&regId={REG_ID_TEMP}&tmFc={tm_fc}&authKey={API_KEY}"
     url_mid_land = f"https://apihub.kma.go.kr/api/typ02/openApi/MidFcstInfoService/getMidLandFcst?dataType=JSON&regId={REG_ID_LAND}&tmFc={tm_fc}&authKey={API_KEY}"
     
     t_res, l_res = fetch_api(url_mid_temp), fetch_api(url_mid_land)
-    if t_res and l_res:
+    if t_res and l_res and 'response' in t_res and 'response' in l_res:
         try:
-            t_items, l_items = t_res['response']['body']['items']['item'][0], l_res['response']['body']['items']['item'][0]
+            t_items = t_res['response']['body']['items']['item'][0]
+            l_items = l_res['response']['body']['items']['item'][0]
+            
             for i in range(4, 11):
-                d_target = (now + timedelta(days=i)).strftime('%Y%m%d')
+                d_target_dt = now + timedelta(days=i)
+                d_target_str = d_target_dt.strftime('%Y%m%d')
                 event = Event()
-                t_min, t_max = t_items.get(f'taMin{i}'), t_items.get(f'taMax{i}')
+                
+                t_min = t_items.get(f'taMin{i}')
+                t_max = t_items.get(f'taMax{i}')
                 mid_desc = []
-                if i <= 7:
-                    wf_am, wf_pm, rn_am, rn_pm = l_items.get(f'wf{i}Am'), l_items.get(f'wf{i}Pm'), l_items.get(f'rnSt{i}Am'), l_items.get(f'rnSt{i}Pm')
-                    wf_rep = wf_pm
+
+                if i <= 7: # 4~7일차: 오전/오후 데이터
+                    wf_am = l_items.get(f'wf{i}Am')
+                    wf_pm = l_items.get(f'wf{i}Pm')
+                    rn_am = l_items.get(f'rnSt{i}Am')
+                    rn_pm = l_items.get(f'rnSt{i}Pm')
+                    wf_rep = wf_pm if wf_pm else wf_am
                     mid_desc.append(f"[오전] {get_mid_emoji(wf_am)} {wf_am} (☔{rn_am}%)")
                     mid_desc.append(f"[오후] {get_mid_emoji(wf_pm)} {wf_pm} (☔{rn_pm}%)")
-                else:
-                    wf_rep, rn_st = l_items.get(f'wf{i}'), l_items.get(f'rnSt{i}')
+                else: # 8~10일차: 종일 데이터
+                    wf_rep = l_items.get(f'wf{i}')
+                    rn_st = l_items.get(f'rnSt{i}')
                     mid_desc.append(f"[종일] {get_mid_emoji(wf_rep)} {wf_rep} (☔{rn_st}%)")
+
                 event.add('summary', f"{get_mid_emoji(wf_rep)} {wf_rep} {t_min}/{t_max}°C")
                 event.add('location', LOCATION_NAME)
                 mid_desc.append(f"\n최종 업데이트: {update_ts} (KST)")
                 event.add('description', "\n".join(mid_desc))
-                event_date = (now + timedelta(days=i)).date()
-                event.add('dtstart', event_date); event.add('dtend', event_date + timedelta(days=1))
-                event.add('uid', f"{d_target}@mid"); cal.add_component(event)
-        except: pass
+                
+                event_date = d_target_dt.date()
+                event.add('dtstart', event_date)
+                event.add('dtend', event_date + timedelta(days=1))
+                event.add('uid', f"{d_target_str}@mid")
+                cal.add_component(event)
+        except Exception as e:
+            print(f"중기 예보 에러: {e}")
 
     with open('weather.ics', 'wb') as f:
         f.write(cal.to_ical())
