@@ -46,7 +46,7 @@ def main():
     seoul_tz = pytz.timezone('Asia/Seoul')
     now = datetime.now(seoul_tz)
     cal = Calendar()
-    cal.add('X-WR-CALNAME', f'기상청 날씨 ({LOCATION_NAME})')
+    cal.add('X-WR-CALNAME', f'기상청 날씨')
     cal.add('X-WR-TIMEZONE', 'Asia/Seoul')
 
     # --- [1. 단기 예보 수집] ---
