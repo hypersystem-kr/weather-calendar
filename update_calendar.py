@@ -97,16 +97,24 @@ def main():
                     if cat in day_data[t_str]: cache[cat] = day_data[t_str][cat]
             if event_time >= now:
                 emoji, wf_str = get_weather_info(cache['SKY'], cache['PTY'])
-                rain_info = ""
-                if cache['PTY'] != '0':  # 비/눈 등이 오는 경우
-                    rain_info = f" ☔{cache['POP']}%"
                 
-                # 2. 습도 및 풍속 아이콘 적용
-                humidity_val = f"💧{cache['REH']}%"
-                wind_val = f"🚩{cache['WSD']}m/s"
+                # 괄호 안에 들어갈 항목들을 담을 리스트
+                details = []
                 
-                # 3. 최종 한 줄 생성
-                line = f"[{t_str[:2]}시] {emoji} {wf_str} {cache['TMP']}°C ({rain_info} {humidity_val} {wind_val} )"
+                # 1. 강수 정보 (비가 올 때만 추가)
+                if cache['PTY'] != '0':
+                    details.append(f"☔{cache['POP']}%")
+                
+                # 2. 습도와 풍속은 항상 추가
+                details.append(f"💧{cache['REH']}%")
+                details.append(f"🚩{cache['WSD']}m/s")
+                
+                # 상세 정보들을 공백 하나로 연결 (예: "☔60% 💧70% 🚩3.4m/s")
+                details_str = " ".join(details)
+                
+                # 최종 라인 구성
+                # [시간] 날씨상태 기온 (상세정보)
+                line = f"[{t_str[:2]}시] {emoji} {wf_str} {cache['TMP']}°C ({details_str})"
                 desc.append(line)
                 has_future_data = True
         if not has_future_data: continue
