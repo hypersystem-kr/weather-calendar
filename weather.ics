@@ -13,8 +13,8 @@ DESCRIPTION:[14시] ⛅ 구름많음 12°C (💧55% 🚩1.7m/s)\n[15시]
  음 10°C (💧55% 🚩0.8m/s)\n[20시] ☀️ 맑음 10°C (💧60% 🚩1
  .2m/s)\n[21시] ☀️ 맑음 10°C (💧55% 🚩1.2m/s)\n[22시] ☀️ 
  맑음 9°C (💧60% 🚩1.7m/s)\n[23시] ☀️ 맑음 9°C (💧95% 🚩
- 1.7m/s)\n\n최종 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ 1.7m/s)\n\n최종 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 8°C/18°C
@@ -37,9 +37,9 @@ DESCRIPTION:[00시] ☀️ 맑음 9°C (💧100% 🚩1.6m/s)\n[01시] ☀
  \n[19시] ☀️ 맑음 13°C (💧50% 🚩0.1m/s)\n[20시] ☀️ 맑음 
  12°C (💧55% 🚩0.1m/s)\n[21시] ☀️ 맑음 11°C (💧50% 🚩0.2m/
  s)\n[22시] ☀️ 맑음 10°C (💧45% 🚩0.3m/s)\n[23시] ☀️ 맑
- 음 10°C (💧55% 🚩0.4m/s)\n\n최종 업데이트: 2026-04-10 13:09:48
+ 음 10°C (💧55% 🚩0.4m/s)\n\n최종 업데이트: 2026-04-10 13:42:52
   (KST)
-LOCATION:우리집
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☁️ 5°C/23°C
@@ -62,9 +62,9 @@ DESCRIPTION:[00시] ☀️ 맑음 9°C (💧60% 🚩0.1m/s)\n[01시] ☀
  /s)\n[19시] ☁️ 흐림 19°C (💧40% 🚩0.1m/s)\n[20시] ☁️ 흐
  림 17°C (💧45% 🚩0.6m/s)\n[21시] ☁️ 흐림 16°C (💧50% 🚩0
  .2m/s)\n[22시] ☁️ 흐림 15°C (💧60% 🚩1.3m/s)\n[23시] ☁️ 
- 흐림 14°C (💧65% 🚩1.7m/s)\n\n최종 업데이트: 2026-04-10 13:09
- :48 (KST)
-LOCATION:우리집
+ 흐림 14°C (💧65% 🚩1.7m/s)\n\n최종 업데이트: 2026-04-10 13:42
+ :52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☁️ 12°C/24°C
@@ -87,8 +87,8 @@ DESCRIPTION:[00시] ☁️ 흐림 14°C (💧65% 🚩1.6m/s)\n[01시] ☁
  💧55% 🚩1m/s)\n[20시] ☁️ 흐림 22°C (💧55% 🚩1m/s)\n[21시]
   ☁️ 흐림 18°C (💧60% 🚩1m/s)\n[22시] ☁️ 흐림 18°C (💧
  60% 🚩1m/s)\n[23시] ☁️ 흐림 18°C (💧60% 🚩1m/s)\n\n최종 
- 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 맑음 10/24°C
@@ -96,8 +96,8 @@ DTSTART;VALUE=DATE:20260414
 DTEND;VALUE=DATE:20260415
 UID:20260414@mid
 DESCRIPTION:[오전] ☀️ 맑음 (☔10%)\n[오후] ☀️ 맑음 (☔10
- %)\n\n최종 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ %)\n\n최종 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 맑음 9/24°C
@@ -105,8 +105,8 @@ DTSTART;VALUE=DATE:20260415
 DTEND;VALUE=DATE:20260416
 UID:20260415@mid
 DESCRIPTION:[오전] ☀️ 맑음 (☔10%)\n[오후] ☀️ 맑음 (☔10
- %)\n\n최종 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ %)\n\n최종 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:⛅ 구름많음 11/24°C
@@ -114,8 +114,8 @@ DTSTART;VALUE=DATE:20260416
 DTEND;VALUE=DATE:20260417
 UID:20260416@mid
 DESCRIPTION:[오전] ☀️ 맑음 (☔10%)\n[오후] ⛅ 구름많음 (
- ☔20%)\n\n최종 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ ☔20%)\n\n최종 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:⛅ 구름많음 12/20°C
@@ -123,8 +123,8 @@ DTSTART;VALUE=DATE:20260417
 DTEND;VALUE=DATE:20260418
 UID:20260417@mid
 DESCRIPTION:[오전] ⛅ 구름많음 (☔20%)\n[오후] ⛅ 구름많음 
- (☔20%)\n\n최종 업데이트: 2026-04-10 13:09:48 (KST)
-LOCATION:우리집
+ (☔20%)\n\n최종 업데이트: 2026-04-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 맑음 10/23°C
@@ -132,8 +132,8 @@ DTSTART;VALUE=DATE:20260418
 DTEND;VALUE=DATE:20260419
 UID:20260418@mid
 DESCRIPTION:[종일] ☀️ 맑음 (☔10%)\n\n최종 업데이트: 2026-0
- 4-10 13:09:48 (KST)
-LOCATION:우리집
+ 4-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 맑음 10/24°C
@@ -141,8 +141,8 @@ DTSTART;VALUE=DATE:20260419
 DTEND;VALUE=DATE:20260420
 UID:20260419@mid
 DESCRIPTION:[종일] ☀️ 맑음 (☔10%)\n\n최종 업데이트: 2026-0
- 4-10 13:09:48 (KST)
-LOCATION:우리집
+ 4-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:☀️ 맑음 11/24°C
@@ -150,7 +150,7 @@ DTSTART;VALUE=DATE:20260420
 DTEND;VALUE=DATE:20260421
 UID:20260420@mid
 DESCRIPTION:[종일] ☀️ 맑음 (☔10%)\n\n최종 업데이트: 2026-0
- 4-10 13:09:48 (KST)
-LOCATION:우리집
+ 4-10 13:42:52 (KST)
+LOCATION:성남시 분당구
 END:VEVENT
 END:VCALENDAR
