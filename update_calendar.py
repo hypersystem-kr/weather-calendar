@@ -48,50 +48,34 @@ def fetch_api(url):
     except:
         return None
 
-# --- [수정 1] base_h 계산 함수: 자정~01:59 시 전날 2300 폴백 ---
 def get_base_datetime(now):
     """
-    현재 시각 기준으로 가장 최근에 발표된 단기예보 base_date/base_time을 반환.
-    발표 시각: 02, 05, 08, 11, 14, 17, 20, 23시 (발표 후 약 10분 뒤 게시)
-    → 실제 안전 사용 가능 시각은 발표 후 +10분으로 처리
-    자정~01:59: 전날 2300 발표본 사용
+    단기예보 발표 시각: 02, 05, 08, 11, 14, 17, 20, 23시
+    안전하게 10분 지연 후 데이터를 가져옴.
     """
     release_hours = [2, 5, 8, 11, 14, 17, 20, 23]
-    # 10분 여유를 두고 현재 시각에서 유효한 마지막 발표 시각을 찾음
     effective_now = now - timedelta(minutes=10)
     valid = [h for h in release_hours if h <= effective_now.hour]
     if valid:
         base_h = max(valid)
         return effective_now.strftime('%Y%m%d'), f"{base_h:02d}00"
     else:
-        # 전날 2300 발표본 사용
         prev = effective_now - timedelta(days=1)
         return prev.strftime('%Y%m%d'), "2300"
 
-# --- [수정 2] 중기예보 tmFc 후보 목록 반환 (현재 → 이전 순) ---
 def get_tmfc_candidates(now):
-    """
-    중기예보 tmFc 후보를 최신순으로 반환.
-    API 게시 지연(약 30분)을 감안해 현재 tmFc와 이전 tmFc 모두 시도.
-    발표: 06시, 18시
-    """
+    """중기예보 tmFc 후보 생성 (오전 6시, 오후 18시)"""
     candidates = []
-    # 현재 발표 시각 계산 (30분 여유)
     effective_now = now - timedelta(minutes=30)
-
     if effective_now.hour < 6:
-        # 전날 18시 → 전전날 18시
         c1 = (effective_now - timedelta(days=1)).replace(hour=18, minute=0, second=0, microsecond=0)
         c2 = (effective_now - timedelta(days=2)).replace(hour=18, minute=0, second=0, microsecond=0)
     elif effective_now.hour < 18:
-        # 오늘 06시 → 전날 18시
         c1 = effective_now.replace(hour=6, minute=0, second=0, microsecond=0)
         c2 = (effective_now - timedelta(days=1)).replace(hour=18, minute=0, second=0, microsecond=0)
     else:
-        # 오늘 18시 → 오늘 06시
         c1 = effective_now.replace(hour=18, minute=0, second=0, microsecond=0)
         c2 = effective_now.replace(hour=6, minute=0, second=0, microsecond=0)
-
     candidates.append(c1)
     candidates.append(c2)
     return candidates
@@ -106,9 +90,7 @@ def main():
     cal.add('X-WR-TIMEZONE', 'Asia/Seoul')
 
     # --- [2. 단기 예보] ---
-    # [수정 1 적용] 자정~01:59 전날 2300 폴백 포함
     base_date, base_time = get_base_datetime(now)
-
     url_short = (
         f"https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getVilageFcst"
         f"?dataType=JSON&base_date={base_date}&base_time={base_time}"
@@ -135,36 +117,36 @@ def main():
         day_data = forecast_map[d_str]
         tmps = [float(day_data[t]['TMP']) for t in day_data if 'TMP' in day_data[t]]
         if not tmps: continue
+        
         t_min, t_max = int(min(tmps)), int(max(tmps))
         rep_t = '1200' if '1200' in day_data else sorted(day_data.keys())[0]
         rep_emoji, _ = get_weather_info(day_data[rep_t].get('SKY', cache['SKY']), day_data[rep_t].get('PTY', cache['PTY']))
+        
         desc = []
-        has_future_data = False
+        # [수정] 현재 시각 이후 필터링을 제거하여 해당 날짜의 전체 예보 데이터를 담음
         for h in range(24):
             t_str = f"{h:02d}00"
-            event_time = seoul_tz.localize(datetime.strptime(f"{d_str}{t_str}", '%Y%m%d%H%M'))
             if t_str in day_data:
                 for cat in cache.keys():
                     if cat in day_data[t_str]: cache[cat] = day_data[t_str][cat]
-            if event_time >= now:
+                
                 emoji, wf_str = get_weather_info(cache['SKY'], cache['PTY'])
-
                 details = []
                 if cache['PTY'] != '0':
                     details.append(f"☔{cache['POP']}%")
                 details.append(f"💧{cache['REH']}%")
                 details.append(f"🚩{cache['WSD']}m/s")
                 details_str = " ".join(details)
+                desc.append(f"[{t_str[:2]}시] {emoji} {wf_str} {cache['TMP']}°C ({details_str})")
 
-                line = f"[{t_str[:2]}시] {emoji} {wf_str} {cache['TMP']}°C ({details_str})"
-                desc.append(line)
-                has_future_data = True
-        if not has_future_data: continue
+        if not desc: continue
+
         event = Event()
         event.add('summary', f"{rep_emoji} {t_min}°C/{t_max}°C")
         event.add('location', LOCATION_NAME)
         desc.append(f"\n최종 업데이트: {update_ts} (KST)")
         event.add('description', "\n".join(desc))
+        
         event_date = datetime.strptime(d_str, '%Y%m%d').date()
         event.add('dtstart', event_date)
         event.add('dtend', event_date + timedelta(days=1))
@@ -173,9 +155,7 @@ def main():
         processed_dates.add(d_str)
 
     # --- [3. 중기 예보] ---
-    # [수정 2 적용] tmFc 후보 순서대로 시도 (API 발표 지연 대응)
     tmfc_candidates = get_tmfc_candidates(now)
-
     t_res, l_res, tm_fc_dt = None, None, None
     for candidate in tmfc_candidates:
         tm_fc_str = candidate.strftime('%Y%m%d%H%M')
@@ -191,49 +171,39 @@ def main():
         l_try = fetch_api(url_mid_land)
         if t_try and l_try:
             t_res, l_res, tm_fc_dt = t_try, l_try, candidate
-            break  # 성공한 tmFc 사용
+            break
 
     if t_res and l_res and tm_fc_dt:
         try:
             t_items = t_res['response']['body']['items']['item'][0]
             l_items = l_res['response']['body']['items']['item'][0]
-        except (KeyError, IndexError, TypeError):
+        except:
             t_items, l_items = None, None
 
         if t_items and l_items:
-            # [수정 3] i=3~10 범위를 순회하되, processed_dates 미포함 날짜만 채움
             for i in range(3, 11):
                 d_target_dt = tm_fc_dt + timedelta(days=i)
                 d_target_str = d_target_dt.strftime('%Y%m%d')
-
-                # 이미 단기예보로 처리된 날짜는 skip
                 if d_target_str in processed_dates: continue
-
-                # [수정 4] 과거 날짜는 skip (tmFc 폴백으로 과거 날짜가 나올 수 있음)
                 if d_target_str < now.strftime('%Y%m%d'): continue
 
                 t_min = t_items.get(f'taMin{i}')
                 t_max = t_items.get(f'taMax{i}')
-                if t_min is None or t_max is None: continue
-
                 wf_rep = l_items.get(f'wf{i}Pm') if i <= 7 else l_items.get(f'wf{i}')
-                if wf_rep is None: continue
+                if t_min is None or t_max is None or wf_rep is None: continue
 
                 event = Event()
                 mid_desc = []
                 if i <= 7:
-                    wf_am = l_items.get(f'wf{i}Am')
-                    wf_pm = l_items.get(f'wf{i}Pm')
-                    rn_am = l_items.get(f'rnSt{i}Am')
-                    rn_pm = l_items.get(f'rnSt{i}Pm')
+                    wf_am, wf_pm = l_items.get(f'wf{i}Am'), l_items.get(f'wf{i}Pm')
+                    rn_am, rn_pm = l_items.get(f'rnSt{i}Am'), l_items.get(f'rnSt{i}Pm')
                     mid_desc.append(f"[오전] {get_mid_emoji(wf_am)} {wf_am} (☔{rn_am}%)")
                     mid_desc.append(f"[오후] {get_mid_emoji(wf_pm)} {wf_pm} (☔{rn_pm}%)")
                 else:
-                    wf_rep_val = l_items.get(f'wf{i}')
-                    rn_st = l_items.get(f'rnSt{i}')
-                    mid_desc.append(f"[종일] {get_mid_emoji(wf_rep_val)} {wf_rep_val} (☔{rn_st}%)")
+                    wf_val, rn_st = l_items.get(f'wf{i}'), l_items.get(f'rnSt{i}')
+                    mid_desc.append(f"[종일] {get_mid_emoji(wf_val)} {wf_val} (☔{rn_st}%)")
 
-                event.add('summary', f"{get_mid_emoji(wf_rep)} {wf_rep} {t_min}/{t_max}°C")
+                event.add('summary', f"{get_mid_emoji(wf_rep)} {t_min}/{t_max}°C")
                 event.add('location', LOCATION_NAME)
                 mid_desc.append(f"\n최종 업데이트: {update_ts} (KST)")
                 event.add('description', "\n".join(mid_desc))
@@ -242,7 +212,6 @@ def main():
                 event.add('dtend', event_date + timedelta(days=1))
                 event.add('uid', f"{d_target_str}@mid")
                 cal.add_component(event)
-                processed_dates.add(d_target_str)
 
     with open('weather.ics', 'wb') as f:
         f.write(cal.to_ical())
