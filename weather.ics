@@ -2,20 +2,6 @@ BEGIN:VCALENDAR
 X-WR-CALNAME:기상청 날씨
 X-WR-TIMEZONE:Asia/Seoul
 BEGIN:VEVENT
-SUMMARY:☀️ 20°C/29°C
-DTSTART;VALUE=DATE:20260612
-DTEND;VALUE=DATE:20260613
-UID:20260612@short_summary
-DESCRIPTION:[16시] ☀️ 맑음 28°C (💧40% 🚩2.3m/s)\n[17시] ☀
- ️ 맑음 27°C (💧40% 🚩1.7m/s)\n[18시] ☀️ 맑음 26°C (💧45
- % 🚩1.2m/s)\n[19시] ☀️ 맑음 24°C (💧50% 🚩0.4m/s)\n[20시] 
- ☀️ 맑음 22°C (💧60% 🚩0.2m/s)\n[21시] ☀️ 맑음 21°C (
- 💧65% 🚩0.1m/s)\n[22시] ☀️ 맑음 20°C (💧70% 🚩0.1m/s)\n[23
- 시] ☀️ 맑음 20°C (💧75% 🚩0.2m/s)\n\n최종 업데이트: 2026
- -06-12 15:54:11 (KST)
-LOCATION:성남시 분당구
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:☀️ 16°C/31°C
 DTSTART;VALUE=DATE:20260613
 DTEND;VALUE=DATE:20260614
