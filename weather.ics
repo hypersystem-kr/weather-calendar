@@ -6,9 +6,8 @@ SUMMARY:☀️ 22°C/24°C
 DTSTART;VALUE=DATE:20260626
 DTEND;VALUE=DATE:20260627
 UID:20260626@short_summary
-DESCRIPTION:[21시] ☀️ 맑음 24°C (💧70% 🚩0.5m/s)\n[22시] ☀
- ️ 맑음 23°C (💧70% 🚩0.8m/s)\n[23시] ☀️ 맑음 22°C (💧70
- % 🚩0.5m/s)\n\n최종 업데이트: 2026-06-26 20:12:48 (KST)
+DESCRIPTION:[23시] ☀️ 맑음 22°C (💧70% 🚩0.5m/s)\n\n최종 업
+ 데이트: 2026-06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -33,7 +32,7 @@ DESCRIPTION:[00시] ☀️ 맑음 22°C (💧75% 🚩0.2m/s)\n[01시] ☀
  ☀️ 맑음 27°C (💧60% 🚩1.3m/s)\n[21시] ☀️ 맑음 26°C (
  💧65% 🚩0.9m/s)\n[22시] ☀️ 맑음 25°C (💧70% 🚩0.5m/s)\n[23
  시] ☀️ 맑음 24°C (💧70% 🚩0.6m/s)\n\n최종 업데이트: 2026
- -06-26 20:12:48 (KST)
+ -06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -58,7 +57,7 @@ DESCRIPTION:[00시] ☀️ 맑음 24°C (💧70% 🚩0.9m/s)\n[01시] ☀
  구름많음 26°C (💧60% 🚩1.4m/s)\n[21시] ⛅ 구름많음 26°C (
  💧65% 🚩1m/s)\n[22시] ☀️ 맑음 25°C (💧70% 🚩1.2m/s)\n[23
  시] ☀️ 맑음 24°C (💧70% 🚩1m/s)\n\n최종 업데이트: 2026-0
- 6-26 20:12:48 (KST)
+ 6-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -83,7 +82,7 @@ DESCRIPTION:[00시] ☀️ 맑음 24°C (💧75% 🚩0.8m/s)\n[01시] ☀
  2m/s)\n[20시] ⛅ 구름많음 27°C (💧60% 🚩0.7m/s)\n[21시] ☁️
   흐림 26°C (💧65% 🚩0.5m/s)\n[22시] ☁️ 흐림 25°C (💧70% 
  🚩0.1m/s)\n[23시] ⛅ 구름많음 24°C (💧75% 🚩0.5m/s)\n\n최종
-  업데이트: 2026-06-26 20:12:48 (KST)
+  업데이트: 2026-06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -101,7 +100,7 @@ DTSTART;VALUE=DATE:20260701
 DTEND;VALUE=DATE:20260702
 UID:20260701@mid
 DESCRIPTION:[오전] ⛅ 구름많음 (☔20%)\n[오후] ⛅ 구름많음 
- (☔20%)\n\n최종 업데이트: 2026-06-26 20:12:48 (KST)
+ (☔20%)\n\n최종 업데이트: 2026-06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -110,7 +109,7 @@ DTSTART;VALUE=DATE:20260702
 DTEND;VALUE=DATE:20260703
 UID:20260702@mid
 DESCRIPTION:[오전] ⛅ 구름많음 (☔20%)\n[오후] ⛅ 구름많음 
- (☔20%)\n\n최종 업데이트: 2026-06-26 20:12:48 (KST)
+ (☔20%)\n\n최종 업데이트: 2026-06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -119,7 +118,7 @@ DTSTART;VALUE=DATE:20260703
 DTEND;VALUE=DATE:20260704
 UID:20260703@mid
 DESCRIPTION:[오전] ☁️ 흐림 (☔30%)\n[오후] ☁️ 흐림 (☔30
- %)\n\n최종 업데이트: 2026-06-26 20:12:48 (KST)
+ %)\n\n최종 업데이트: 2026-06-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -128,7 +127,7 @@ DTSTART;VALUE=DATE:20260704
 DTEND;VALUE=DATE:20260705
 UID:20260704@mid
 DESCRIPTION:[종일] ☁️ 흐림 (☔40%)\n\n최종 업데이트: 2026-0
- 6-26 20:12:48 (KST)
+ 6-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -137,7 +136,7 @@ DTSTART;VALUE=DATE:20260705
 DTEND;VALUE=DATE:20260706
 UID:20260705@mid
 DESCRIPTION:[종일] ☁️ 흐림 (☔40%)\n\n최종 업데이트: 2026-0
- 6-26 20:12:48 (KST)
+ 6-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
@@ -146,7 +145,7 @@ DTSTART;VALUE=DATE:20260706
 DTEND;VALUE=DATE:20260707
 UID:20260706@mid
 DESCRIPTION:[종일] ☁️ 흐림 (☔40%)\n\n최종 업데이트: 2026-0
- 6-26 20:12:48 (KST)
+ 6-26 22:19:14 (KST)
 LOCATION:성남시 분당구
 END:VEVENT
 END:VCALENDAR
