@@ -77,18 +77,6 @@ DESCRIPTION:[00시] ⛅ 구름많음 25°C (💧90% 🚩0.7m/s)\n[01시]
 LOCATION:성남시 분당구
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:☀️ 25°C/27°C
-DTSTART;VALUE=DATE:20260816
-DTEND;VALUE=DATE:20260817
-UID:20260816@short_summary
-DESCRIPTION:[18시] ☀️ 맑음 27°C (💧75% 🚩2.6m/s)\n[19시] ⛅ 
- 구름많음 26°C (💧75% 🚩2.4m/s)\n[20시] ☀️ 맑음 26°C (💧
- 75% 🚩2.2m/s)\n[21시] 🌧️ 비 26°C (☔60% 💧75% 🚩1.9m/s)\n[2
- 2시] ☁️ 흐림 25°C (💧75% 🚩1.9m/s)\n[23시] ☁️ 흐림 25°
- C (💧80% 🚩1.8m/s)\n\n최종 업데이트: 2026-08-16 17:44:18 (KST)
-LOCATION:성남시 분당구
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:⛅ 24/32°C
 DTSTART;VALUE=DATE:20260820
 DTEND;VALUE=DATE:20260821
