@@ -1,8 +1,9 @@
 name: Update Weather ICS
 
 on:
-#  schedule:
-#    - cron: '15 17,20,23,2,5,8,11,14 * * *'
+  schedule:
+    - cron: '15 17,20,23,2,5,8,11,14 * * *'
+
   repository_dispatch:
     types: [update-weather-ics]
 
@@ -11,6 +12,7 @@ on:
       - 'update_calendar.py'
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
@@ -19,17 +21,17 @@ permissions:
   id-token: write
 
 jobs:
-  # 여러 러너에서 동시에 시도합니다. 러너마다 다른 IP를 배정받기 때문에,
-  # 특정 IP 대역이 KMA API허브 쪽에서 막혀있어도 병렬 시도 중 하나는
-  # 안 막힌 IP를 받을 확률이 올라갑니다. (같은 authKey, 추가 인프라 불필요)
   fetch:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     strategy:
       fail-fast: false
       matrix:
         attempt: [1, 2, 3, 4, 5]
+
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,7 +66,6 @@ jobs:
           TZ: Asia/Seoul
         run: python -u update_calendar.py
 
-      # 성공/실패 여부와 상관없이, 이번 시도의 IP·결과를 리포트 파일로 남깁니다.
       - name: Write attempt report
         if: always()
         run: |
@@ -81,7 +82,6 @@ jobs:
           path: report/report-${{ matrix.attempt }}.json
           retention-days: 7
 
-      # API를 실제로 받아온(캐시 폴백이 아닌) 시도만 artifact로 올립니다.
       - name: Upload result (only if API succeeded)
         if: steps.run_script.outcome == 'success'
         uses: actions/upload-artifact@v4
@@ -90,12 +90,11 @@ jobs:
           path: weather.ics
           retention-days: 1
 
-  # fetch의 병렬 시도 중 성공한 게 하나라도 있으면 그걸로 커밋하고,
-  # 셋 다 실패했으면 기존 파일 그대로 두고(=변경 없음) 잡 실패로 표시합니다.
   commit:
     needs: fetch
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -129,24 +128,30 @@ jobs:
 
           success_count=0
           total_count=0
+
           if [ -d reports ]; then
             for f in $(ls reports/report-*.json 2>/dev/null | sort -t- -k2 -n); do
               attempt=$(jq -r '.attempt' "$f")
               ip=$(jq -r '.ip' "$f")
               outcome=$(jq -r '.outcome' "$f")
+
               total_count=$((total_count + 1))
+
               if [ "$outcome" = "success" ]; then
                 mark="✅ 성공"
                 success_count=$((success_count + 1))
               else
                 mark="❌ 실패"
               fi
+
               echo "| $attempt | $ip | $mark |" >> "$GITHUB_STEP_SUMMARY"
             done
           fi
+
           if [ "$total_count" -eq 0 ]; then
             echo "| - | (리포트 없음) | - |" >> "$GITHUB_STEP_SUMMARY"
           fi
+
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "**${success_count} / ${total_count} 성공**" >> "$GITHUB_STEP_SUMMARY"
 
@@ -166,9 +171,12 @@ jobs:
         if: steps.pick.outputs.any_success == 'true'
         run: |
           KST_TIME=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M:%S')
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git add weather.ics
+
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Update weather.ics [$KST_TIME KST]"
             git push
@@ -176,8 +184,8 @@ jobs:
             echo "No changes to commit"
           fi
 
-      - name: Fail job if every attempt fell back to cache
+      - name: Fail job if every attempt failed
         if: steps.pick.outputs.any_success == 'false'
         run: |
-          echo "::error::5번의 병렬 시도 모두 API 호출에 실패해서 캐시 데이터를 유지했습니다. 이 워크플로우 실행은 실패로 표시됩니다."
+          echo "::error::5번의 병렬 시도 모두 API 호출에 실패해서 기존 캐시 데이터를 유지했습니다."
           exit 1
